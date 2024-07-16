@@ -4,6 +4,7 @@ library(tidyverse)
 library(ggplot2)
 library(ggrepel)
 library(Seurat)
+library(RColorBrewer)
 # library(CytoTRACE)
 
 
@@ -35,7 +36,7 @@ mye <- readRDS(file = "RDSfiles/seu_090_myeloid_npc20.RDS")
 seu <- merge(x = epi, y = c(str, Bcell, Tcell, mye))
 rm(epi, str, Bcell, Tcell, mye)
 table(seu$cellgroup)
-seu$cellgroup <- factor(seu$cellgroup, levels = c("epithelial", "stromal", "Tcell", "Bcell", "myeloid"))
+seu$cellgroup <- factor(seu$cellgroup, levels = c("epithelial", "stromal", "Bcell", "Tcell", "myeloid"))
 
 ####
 # clustering with harmony integration ----
@@ -76,7 +77,7 @@ for(i in 1:length(features)){
   }, error = function(e){cat("ERROR :", conditionMessage(e), "\n")})
 }
 
-# FeaturePlot(seu, features = "IL3RA", cols = c("lightgrey","darkred"), label = TRUE, repel = TRUE) + NoAxes() + NoLegend()
+# FeaturePlot(seu, features = "CRYAB", cols = c("lightgrey","darkred"), label = TRUE, repel = TRUE) + NoAxes() + NoLegend()
 
 
 Idents(seu) <- "nanostring_reference"
@@ -87,13 +88,13 @@ DimPlot(seu, label = TRUE, repel = TRUE) + NoAxes()
 ggsave("annotation.png", path = path, width = 18, height = 6, units = "in", dpi = 150)
 
 Idents(seu) <- "cellgroup"
-DimPlot(seu, label = TRUE, repel = TRUE) + NoAxes()
+DimPlot(seu, label = TRUE, repel = TRUE, cols = brewer.pal(5, "Set1")) + NoAxes()
 ggsave("cellgroup.png", path = path, width = 6, height = 5, units = "in", dpi = 150)
 Idents(seu) <- "celltype"
 DimPlot(seu, label = TRUE, repel = TRUE) + NoAxes()
 ggsave("celltype.png", path = path, width = 10, height = 5, units = "in", dpi = 150)
 Idents(seu) <- "celltype_cr"
-DimPlot(seu, label = TRUE, repel = TRUE) + NoAxes()
+DimPlot(seu, label = TRUE, repel = TRUE, cols = "polychrome") + NoAxes()
 ggsave("celltype_cr.png", path = path, width = 10, height = 5, units = "in", dpi = 150)
 # DimPlot(seu, split.by = "exp_group") + NoAxes()
 # ggsave("split.png", path = path, width = 12, height = 4, units = "in", dpi = 150)

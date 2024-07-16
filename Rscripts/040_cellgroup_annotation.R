@@ -10,6 +10,7 @@ library(tidyverse)
 library(ggplot2)
 library(ggrepel)
 library(Seurat)
+library(RColorBrewer)
 
 
 ####
@@ -42,7 +43,7 @@ seu <- RenameIdents(
 seu$cellgroup <- Idents(seu)
 seu$cellgroup <- factor(seu$cellgroup, levels = c("epithelial", "stromal", "Tcell", "Bcell", "myeloid", "TandB"))
 Idents(seu) <- "cellgroup"
-DimPlot(seu, label = TRUE, repel = TRUE) + NoAxes()
+DimPlot(seu, label = TRUE, repel = TRUE) + NoAxes() 
 ggsave("cellgroup.png", path = path, width = 7, height = 5, units = "in", dpi = 150)
 DimPlot(seu, split.by = "exp_group") + NoAxes()
 ggsave("split.png", path = path, width = 12, height = 4, units = "in", dpi = 150)

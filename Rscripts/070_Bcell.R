@@ -14,6 +14,8 @@ npcs = 30
 path = paste0("plots/", description, "_npc", as.character(npcs))
 dir.create(path)
 RDSfile = paste0("RDSfiles/seu_", description, "_npc", as.character(npcs), ".RDS")
+pal = DiscretePalette(n = 36, palette = "polychrome", shuffle = FALSE)
+
 
 
 ####
@@ -145,6 +147,6 @@ levels[levels %in% c("Naive-B", "GC-B", "Mem.-B")] <- "Bcell"
 seu$celltype_cr <- seu$celltype
 levels(seu$celltype_cr) <- levels
 Idents(seu) <- "celltype_cr"
-DimPlot(seu, label = TRUE, repel = TRUE) + NoAxes()
+DimPlot(seu, label = TRUE, repel = TRUE, cols = pal[17:20]) + NoAxes()
 ggsave("celltype_cr.png", path = path, width = 7, height = 5, units = "in", dpi = 150)
 saveRDS(seu, file = RDSfile)
